@@ -1,10 +1,17 @@
 <script lang="ts">
+  import { createEventDispatcher } from 'svelte'
   import type { Task, TaskStatus } from '$lib/types'
+  import TaskCard from './TaskCard.svelte'
   
   // Props with validation
   export let title: string
   export let tasks: Task[] = []
   export let status: TaskStatus | undefined = undefined
+  
+  // Event dispatcher for parent communication
+  const dispatch = createEventDispatcher<{
+    taskClick: { task: Task; column: string }
+  }>()
   
   // Derived state for better performance
   $: taskCount = tasks.length
@@ -15,6 +22,12 @@
   
   // Use status for styling and future functionality
   $: columnClass = status ? `kanban-column-${status}` : ''
+  
+  // Event handlers
+  function handleTaskClick(event: CustomEvent<{ task: Task }>) {
+    const { task } = event.detail
+    dispatch('taskClick', { task, column: title })
+  }
 </script>
 
 <div class="card bg-base-100 shadow-sm h-full border border-base-300 {columnClass}" role="region" aria-labelledby="{columnId}-heading">
@@ -39,23 +52,10 @@
         </div>
       {/if}
       
-      <!-- Future TaskCard components will go here -->
       {#each tasks as task (task.id)}
-        <button 
-          class="p-3 sm:p-4 bg-base-200 rounded-lg hover:bg-base-300 transition-colors focus:ring-2 focus:ring-primary focus:ring-offset-2 w-full text-left"
-          aria-describedby="task-{task.id}-desc"
-          type="button"
-        >
-          <h3 class="font-medium text-sm sm:text-base" id="task-{task.id}-title">
-            {task.title}
-          </h3>
-          <p 
-            id="task-{task.id}-desc" 
-            class="text-xs sm:text-sm text-base-content/70 mt-1"
-          >
-            {task.description}
-          </p>
-        </button>
+        <div role="listitem">
+          <TaskCard {task} on:click={handleTaskClick} />
+        </div>
       {/each}
     </div>
   </div>

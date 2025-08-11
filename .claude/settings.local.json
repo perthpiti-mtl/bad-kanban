@@ -9,7 +9,13 @@
       "Bash(yarn dev:*)",
       "Bash(yarn lint)",
       "Bash(yarn type-check)",
-      "Bash(md-tree explode:*)"
+      "Bash(md-tree explode:*)",
+      "Bash(yarn test:*)",
+      "Bash(yarn playwright:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run lint)",
+      "Bash(npm run test:unit:*)",
+      "Bash(npm install)"
     ],
     "deny": []
   }

@@ -1,9 +1,10 @@
 <script lang="ts">
   import type { Task } from '$lib/types'
   import KanbanBoard from '$lib/components/kanban/KanbanBoard.svelte'
+  import { sampleTasks } from '$lib/data/sample-tasks'
   
-  // Sample data for demonstration - empty arrays to show empty state
-  let tasks: Task[] = []
+  // Sample data for demonstration
+  let tasks: Task[] = sampleTasks
   
   // Page metadata for better SEO and accessibility
   const pageTitle = 'BMad Kanban Board'

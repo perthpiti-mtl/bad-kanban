@@ -1020,7 +1020,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/dom@npm:^10.4.0":
+"@testing-library/dom@npm:9.x.x || 10.x.x, @testing-library/dom@npm:^10.4.0":
   version: 10.4.1
   resolution: "@testing-library/dom@npm:10.4.1"
   dependencies:
@@ -1036,7 +1036,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/jest-dom@npm:^6.6.3":
+"@testing-library/jest-dom@npm:^6.6.3, @testing-library/jest-dom@npm:^6.6.4":
   version: 6.6.4
   resolution: "@testing-library/jest-dom@npm:6.6.4"
   dependencies:
@@ -1048,6 +1048,24 @@ __metadata:
     picocolors: "npm:^1.1.1"
     redent: "npm:^3.0.0"
   checksum: 10c0/cb73adf4910f654f6cc61cfb9a551efdffa04ef423bc7fbfd67a6d8aa31c6c6dc6363fe9db23a35fc7cb32ff1390e6e1c77575c2fa70d8b028a943af32bc214c
+  languageName: node
+  linkType: hard
+
+"@testing-library/svelte@npm:^5.2.8":
+  version: 5.2.8
+  resolution: "@testing-library/svelte@npm:5.2.8"
+  dependencies:
+    "@testing-library/dom": "npm:9.x.x || 10.x.x"
+  peerDependencies:
+    svelte: ^3 || ^4 || ^5 || ^5.0.0-next.0
+    vite: "*"
+    vitest: "*"
+  peerDependenciesMeta:
+    vite:
+      optional: true
+    vitest:
+      optional: true
+  checksum: 10c0/6bff73bf3fed3a4bde5fd74db689013213470054d044d50e65d409fd567b2e16050c33031361e733a67af489eaad2bdfc71968ef4180c271c67f59e047e7d0c8
   languageName: node
   linkType: hard
 
@@ -1591,6 +1609,8 @@ __metadata:
     "@sveltejs/kit": "npm:^2.22.0"
     "@sveltejs/vite-plugin-svelte": "npm:^6.0.0"
     "@tailwindcss/typography": "npm:^0.5.16"
+    "@testing-library/jest-dom": "npm:^6.6.4"
+    "@testing-library/svelte": "npm:^5.2.8"
     "@types/node": "npm:^20"
     "@vitest/browser": "npm:^3.2.3"
     autoprefixer: "npm:^10.4.21"

@@ -42,6 +42,8 @@ const RAW_RUNTIME_STATE =
           ["@sveltejs/kit", "virtual:7f9318622f3da2e4c6ea1886f63c16e448435f3ede351b3599417fa4c39732b3488ecfe96bfb6190f8fa0659a18d5af2633e06866ff36673bcd266e723bde0d3#npm:2.27.3"],\
           ["@sveltejs/vite-plugin-svelte", "virtual:7f9318622f3da2e4c6ea1886f63c16e448435f3ede351b3599417fa4c39732b3488ecfe96bfb6190f8fa0659a18d5af2633e06866ff36673bcd266e723bde0d3#npm:6.1.1"],\
           ["@tailwindcss/typography", "virtual:7f9318622f3da2e4c6ea1886f63c16e448435f3ede351b3599417fa4c39732b3488ecfe96bfb6190f8fa0659a18d5af2633e06866ff36673bcd266e723bde0d3#npm:0.5.16"],\
+          ["@testing-library/jest-dom", "npm:6.6.4"],\
+          ["@testing-library/svelte", "virtual:7f9318622f3da2e4c6ea1886f63c16e448435f3ede351b3599417fa4c39732b3488ecfe96bfb6190f8fa0659a18d5af2633e06866ff36673bcd266e723bde0d3#npm:5.2.8"],\
           ["@types/node", "npm:20.19.10"],\
           ["@vitest/browser", "virtual:7f9318622f3da2e4c6ea1886f63c16e448435f3ede351b3599417fa4c39732b3488ecfe96bfb6190f8fa0659a18d5af2633e06866ff36673bcd266e723bde0d3#npm:3.2.4"],\
           ["autoprefixer", "virtual:7f9318622f3da2e4c6ea1886f63c16e448435f3ede351b3599417fa4c39732b3488ecfe96bfb6190f8fa0659a18d5af2633e06866ff36673bcd266e723bde0d3#npm:10.4.21"],\
@@ -1605,6 +1607,37 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@testing-library/svelte", [\
+      ["npm:5.2.8", {\
+        "packageLocation": "../../.yarn/berry/cache/@testing-library-svelte-npm-5.2.8-37950990f5-10c0.zip/node_modules/@testing-library/svelte/",\
+        "packageDependencies": [\
+          ["@testing-library/svelte", "npm:5.2.8"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:7f9318622f3da2e4c6ea1886f63c16e448435f3ede351b3599417fa4c39732b3488ecfe96bfb6190f8fa0659a18d5af2633e06866ff36673bcd266e723bde0d3#npm:5.2.8", {\
+        "packageLocation": "./.yarn/__virtual__/@testing-library-svelte-virtual-b482bd46bb/3/.yarn/berry/cache/@testing-library-svelte-npm-5.2.8-37950990f5-10c0.zip/node_modules/@testing-library/svelte/",\
+        "packageDependencies": [\
+          ["@testing-library/dom", "npm:10.4.1"],\
+          ["@testing-library/svelte", "virtual:7f9318622f3da2e4c6ea1886f63c16e448435f3ede351b3599417fa4c39732b3488ecfe96bfb6190f8fa0659a18d5af2633e06866ff36673bcd266e723bde0d3#npm:5.2.8"],\
+          ["@types/svelte", null],\
+          ["@types/vite", null],\
+          ["@types/vitest", null],\
+          ["svelte", "npm:5.38.0"],\
+          ["vite", "virtual:7f9318622f3da2e4c6ea1886f63c16e448435f3ede351b3599417fa4c39732b3488ecfe96bfb6190f8fa0659a18d5af2633e06866ff36673bcd266e723bde0d3#npm:7.1.1"],\
+          ["vitest", "virtual:7f9318622f3da2e4c6ea1886f63c16e448435f3ede351b3599417fa4c39732b3488ecfe96bfb6190f8fa0659a18d5af2633e06866ff36673bcd266e723bde0d3#npm:3.2.4"]\
+        ],\
+        "packagePeers": [\
+          "@types/svelte",\
+          "@types/vite",\
+          "@types/vitest",\
+          "svelte",\
+          "vite",\
+          "vitest"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@testing-library/user-event", [\
       ["npm:14.6.1", {\
         "packageLocation": "../../.yarn/berry/cache/@testing-library-user-event-npm-14.6.1-5da7e1d4e2-10c0.zip/node_modules/@testing-library/user-event/",\
@@ -2466,6 +2499,8 @@ const RAW_RUNTIME_STATE =
           ["@sveltejs/kit", "virtual:7f9318622f3da2e4c6ea1886f63c16e448435f3ede351b3599417fa4c39732b3488ecfe96bfb6190f8fa0659a18d5af2633e06866ff36673bcd266e723bde0d3#npm:2.27.3"],\
           ["@sveltejs/vite-plugin-svelte", "virtual:7f9318622f3da2e4c6ea1886f63c16e448435f3ede351b3599417fa4c39732b3488ecfe96bfb6190f8fa0659a18d5af2633e06866ff36673bcd266e723bde0d3#npm:6.1.1"],\
           ["@tailwindcss/typography", "virtual:7f9318622f3da2e4c6ea1886f63c16e448435f3ede351b3599417fa4c39732b3488ecfe96bfb6190f8fa0659a18d5af2633e06866ff36673bcd266e723bde0d3#npm:0.5.16"],\
+          ["@testing-library/jest-dom", "npm:6.6.4"],\
+          ["@testing-library/svelte", "virtual:7f9318622f3da2e4c6ea1886f63c16e448435f3ede351b3599417fa4c39732b3488ecfe96bfb6190f8fa0659a18d5af2633e06866ff36673bcd266e723bde0d3#npm:5.2.8"],\
           ["@types/node", "npm:20.19.10"],\
           ["@vitest/browser", "virtual:7f9318622f3da2e4c6ea1886f63c16e448435f3ede351b3599417fa4c39732b3488ecfe96bfb6190f8fa0659a18d5af2633e06866ff36673bcd266e723bde0d3#npm:3.2.4"],\
           ["autoprefixer", "virtual:7f9318622f3da2e4c6ea1886f63c16e448435f3ede351b3599417fa4c39732b3488ecfe96bfb6190f8fa0659a18d5af2633e06866ff36673bcd266e723bde0d3#npm:10.4.21"],\
