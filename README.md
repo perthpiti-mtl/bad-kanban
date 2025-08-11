@@ -1,38 +1,107 @@
-# sv
+# BMad - AI-Enhanced Kanban Board
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+A modern, AI-enhanced Kanban board built with SvelteKit, featuring comprehensive component documentation via Storybook.
 
-## Creating a project
+## Quick Start
 
-If you're seeing this, you've probably already done this step. Congrats!
+```bash
+# Install dependencies
+yarn install
 
-```sh
-# create a new project in the current directory
-npx sv create
+# Start development server
+yarn dev
 
-# create a new project in my-app
-npx sv create my-app
+# Start Storybook for component development
+yarn storybook
 ```
 
-## Developing
+## Component Development
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+This project follows a comprehensive component development workflow with mandatory Storybook stories:
 
-```sh
-npm run dev
+### Creating Components
+```bash
+# 1. Create your component
+# src/lib/components/ui/MyComponent.svelte
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+# 2. Generate Storybook story automatically
+yarn create-story src/lib/components/ui/MyComponent.svelte
+
+# 3. Start interactive development
+yarn storybook  # Opens http://localhost:6007
 ```
 
-## Building
+### Development Requirements
+Every UI component must have:
+- ✅ Component implementation (.svelte)
+- ✅ Storybook stories (.stories.svelte) - **REQUIRED**
+- ✅ Unit tests (.test.ts)
+- ✅ Documentation (JSDoc)
 
-To create a production version of your app:
+## Available Scripts
 
-```sh
-npm run build
+```bash
+# Development
+yarn dev                  # Start development server
+yarn storybook           # Start Storybook (component dev/docs)
+
+# Component Creation  
+yarn create-story <path> # Generate story for component
+
+# Quality Assurance
+yarn test:unit           # Run unit tests
+yarn lint                # Check code quality
+yarn type-check          # TypeScript validation
+yarn format              # Format code
+
+# Build
+yarn build               # Production build
+yarn build-storybook     # Build Storybook for deployment
 ```
 
-You can preview the production build with `npm run preview`.
+## Documentation
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+- [Component Development Workflow](docs/COMPONENT_DEVELOPMENT_WORKFLOW.md) - Complete development process
+- [Storybook Guide](docs/STORYBOOK_GUIDE.md) - Story creation best practices  
+- [AI Developer Prompts](docs/AI_DEVELOPER_PROMPTS.md) - Templates for AI-assisted development
+- [Architecture](docs/architecture/) - Technical architecture and standards
+
+## Technology Stack
+
+- **Frontend**: SvelteKit, TypeScript, DaisyUI, Tailwind CSS
+- **Documentation**: Storybook with interactive component testing
+- **Testing**: Vitest, Testing Library
+- **Development**: AI-assisted development with BMad method
+
+## Project Structure
+
+```
+src/
+├── lib/
+│   ├── components/           # UI components
+│   │   ├── ui/              # Basic UI components  
+│   │   ├── kanban/          # Kanban-specific components
+│   │   └── *.stories.svelte # Storybook stories (required)
+│   ├── types/               # TypeScript definitions
+│   └── utils/               # Utility functions
+├── routes/                  # SvelteKit routes
+└── stories/                 # Example Storybook stories
+
+docs/                        # Project documentation
+tests/                       # Unit tests
+```
+
+## Storybook Integration
+
+Access interactive component documentation at **http://localhost:6007**
+
+Features:
+- Interactive component testing
+- Visual regression testing capability
+- Accessibility testing with a11y addon
+- Comprehensive component documentation
+- Theme switching (light/dark)
+
+---
+
+Built with the BMad development method - comprehensive, AI-enhanced, and documentation-driven development.

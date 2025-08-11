@@ -62,17 +62,25 @@ The BMad Kanban Board architecture is composed of several key components that wo
 
 ## UI Component Library
 
-**Responsibility:** Reusable Svelte components built on DaisyUI foundation, providing consistent, accessible, and responsive user interface elements.
+**Responsibility:** Reusable Svelte components built on DaisyUI foundation, providing consistent, accessible, and responsive user interface elements with comprehensive Storybook documentation.
 
 **Key Interfaces:**
 - Svelte component props and events
 - DaisyUI component integration
 - Tailwind CSS utility classes
 - Accessibility (ARIA) attributes
+- Storybook interactive documentation
+- Automated story generation via `yarn create-story`
 
-**Dependencies:** DaisyUI, Tailwind CSS, Svelte framework
+**Development Requirements:**
+- Every component MUST have Storybook stories (.stories.svelte)
+- Stories demonstrate all component variants and states
+- Interactive testing and documentation via Storybook at http://localhost:6007
+- Automated story creation: `yarn create-story src/lib/components/ComponentName.svelte`
 
-**Technology Stack:** Svelte, DaisyUI, Tailwind CSS, TypeScript
+**Dependencies:** DaisyUI, Tailwind CSS, Svelte framework, Storybook
+
+**Technology Stack:** Svelte, DaisyUI, Tailwind CSS, TypeScript, Storybook
 
 ## Container Runtime
 

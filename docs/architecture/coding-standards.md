@@ -63,6 +63,18 @@ export interface ApiResponse<T> {
 
 ## Svelte Component Standards
 
+### Component Development Checklist
+**REQUIRED for every UI component:**
+1. ✅ **Component Implementation** - The `.svelte` file with proper TypeScript
+2. ✅ **Storybook Stories** - Interactive documentation and testing (`.stories.svelte`)
+3. ✅ **Unit Tests** - Automated testing for component logic
+4. ✅ **JSDoc Documentation** - Clear usage guidelines
+
+**Storybook Story Creation:**
+- Use `yarn create-story src/lib/components/path/Component.svelte` to auto-generate
+- Every component MUST have comprehensive stories showing all variants and states
+- Stories serve as interactive documentation and visual testing
+
 ### Component Structure
 ```svelte
 <script lang="ts">
