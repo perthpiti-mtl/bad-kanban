@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: runner
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOST=0.0.0.0
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) }).on('error', () => process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  # Development service with hot reload
+  app-dev:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: deps
+    ports:
+      - "5173:5173"
+    environment:
+      - NODE_ENV=development
+      - PORT=5173
+      - HOST=0.0.0.0
+    volumes:
+      # Mount source code for hot reload
+      - ..:/app
+      - /app/node_modules
+      # Mount specific config files
+      - ../package.json:/app/package.json:ro
+      - ../vite.config.ts:/app/vite.config.ts:ro
+      - ../svelte.config.js:/app/svelte.config.js:ro
+      - ../tsconfig.json:/app/tsconfig.json:ro
+      - ../tailwind.config.js:/app/tailwind.config.js:ro
+    command: yarn dev --host 0.0.0.0 --port 5173
+    networks:
+      - app-network
+    profiles:
+      - dev
+
+networks:
+  app-network:
+    driver: bridge
+
+# Usage:
+# Production: docker-compose up app
+# Development: docker-compose --profile dev up app-dev
