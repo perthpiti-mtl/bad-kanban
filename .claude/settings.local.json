@@ -2,7 +2,14 @@
   "permissions": {
     "allow": [
       "WebFetch(domain:svelte.dev)",
-      "Bash(npx sv@latest create bmad-temp --template minimal --types ts --skip-install)"
+      "Bash(npx sv@latest create bmad-temp --template minimal --types ts --skip-install)",
+      "Bash(yarn build)",
+      "Bash(mkdir:*)",
+      "Bash(yarn install)",
+      "Bash(yarn dev:*)",
+      "Bash(yarn lint)",
+      "Bash(yarn type-check)",
+      "Bash(md-tree explode:*)"
     ],
     "deny": []
   }

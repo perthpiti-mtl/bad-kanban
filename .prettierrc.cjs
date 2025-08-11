@@ -5,7 +5,7 @@ module.exports = {
 	semi: false,
 	trailingComma: 'none',
 	singleQuote: true,
-	plugins: [require('prettier-plugin-svelte')],
+	plugins: ['prettier-plugin-svelte'],
 	overrides: [
 		{
 			files: '*.svelte',
