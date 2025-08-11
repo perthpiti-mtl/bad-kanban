@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:svelte.dev)",
+      "Bash(npx sv@latest create bmad-temp --template minimal --types ts --skip-install)"
+    ],
+    "deny": []
+  }
+}

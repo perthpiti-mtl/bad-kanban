@@ -1,0 +1,29 @@
+# Package Managers
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+bun.lock
+bun.lockb
+.bmad-core
+.claude
+.cursor
+.gemini
+.qwen
+.github
+.gitignore
+.kilocodemodes
+.npmrc
+.pnp.cjs
+.pnp.loader.mjs
+.pnp.loader.mjs
+.prettierignore
+.prettierrc.js
+.roomodes
+
+
+# Miscellaneous
+/static/
+
+# Ignore dotenv files
+.env
+.env.*
