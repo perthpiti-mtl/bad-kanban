@@ -38,6 +38,7 @@
   // Functions
   function handleClick() {
     dispatch('click', { task })
+    dispatch('edit', { taskId: task.id })
   }
   
   function handleKeydown(event: KeyboardEvent) {
@@ -64,6 +65,8 @@
   on:keydown={handleKeydown}
   aria-labelledby="task-{task.id}-title"
   aria-describedby="task-{task.id}-desc task-{task.id}-priority"
+  data-testid="task-card"
+  data-task-id={task.id}
 >
   <div class="card-body {isCompact ? 'p-3' : 'p-4'}">
     <div class="flex items-start justify-between gap-2 mb-2">

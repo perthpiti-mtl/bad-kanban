@@ -1,38 +1,5 @@
-/**
- * Core task interface representing a work item in the Kanban board
- */
-export interface Task {
-  /** Unique identifier for the task */
-  id: string
-  /** Task title/summary */
-  title: string
-  /** Detailed task description */
-  description: string
-  /** Current status of the task */
-  status: TaskStatus
-  /** Task priority level */
-  priority: Priority
-  /** Optional due date */
-  dueDate: Date | null
-  /** Timestamp when task was created */
-  createdAt: Date
-  /** Timestamp when task was last updated */
-  updatedAt: Date
-  /** Flag indicating if task was AI-generated */
-  aiGenerated: boolean
-  /** Original AI prompt used to generate task (if applicable) */
-  originalPrompt: string | null
-}
-
-/**
- * Task status enum defining workflow states
- */
-export type TaskStatus = 'todo' | 'in-progress' | 'done'
-
-/**
- * Task priority levels for organizing work
- */
-export type Priority = 'high' | 'medium' | 'low'
+// Re-export Zod schemas and inferred types
+export * from './schemas'
 
 /**
  * Standard API response wrapper for type-safe server communication

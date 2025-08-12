@@ -1,18 +1,34 @@
 <script lang="ts">
-  import type { Task } from '$lib/types'
+  import { onMount } from 'svelte'
   import KanbanColumn from './KanbanColumn.svelte'
+  import FloatingActionButton from '$lib/components/ui/FloatingActionButton.svelte'
+  import TaskCreationModal from '$lib/components/modals/TaskCreationModal.svelte'
+  import TaskEditModal from '$lib/components/modals/TaskEditModal.svelte'
+  import { tasks, todoTasks, inProgressTasks, doneTasks, loadTasksFromLocalStorage, openTaskModal, openTaskEditModal, enableAutoSave, disableAutoSave } from '$lib/stores/tasks'
   
-  // Props with validation
-  export let tasks: Task[] = []
-  
-  // Organize tasks by status with performance optimization
-  $: todoTasks = tasks.filter(task => task.status === 'todo')
-  $: inProgressTasks = tasks.filter(task => task.status === 'in-progress')  
-  $: doneTasks = tasks.filter(task => task.status === 'done')
+  // Load tasks from localStorage when component mounts
+  onMount(() => {
+    loadTasksFromLocalStorage()
+    enableAutoSave()
+    
+    // Cleanup auto-save subscription on component destroy
+    return () => {
+      disableAutoSave()
+    }
+  })
   
   // Performance metrics for monitoring
-  $: totalTasks = tasks.length
-  $: completionRate = totalTasks > 0 ? Math.round((doneTasks.length / totalTasks) * 100) : 0
+  $: totalTasks = $tasks.length
+  $: completionRate = totalTasks > 0 ? Math.round(($doneTasks.length / totalTasks) * 100) : 0
+
+  function handleCreateTask() {
+    openTaskModal()
+  }
+
+  function handleTaskEdit(event: CustomEvent<{ taskId: string }>) {
+    const { taskId } = event.detail
+    openTaskEditModal(taskId)
+  }
 </script>
 
 <div class="container mx-auto p-4 max-w-7xl">
@@ -24,19 +40,31 @@
     <KanbanColumn 
       title="To Do" 
       status="todo"
-      tasks={todoTasks}
+      tasks={$todoTasks}
+      on:taskEdit={handleTaskEdit}
     />
     
     <KanbanColumn 
       title="In Progress" 
       status="in-progress"
-      tasks={inProgressTasks}
+      tasks={$inProgressTasks}
+      on:taskEdit={handleTaskEdit}
     />
     
     <KanbanColumn 
       title="Done" 
       status="done"
-      tasks={doneTasks}
+      tasks={$doneTasks}
+      on:taskEdit={handleTaskEdit}
     />
   </div>
+  
+  <!-- Floating Action Button -->
+  <FloatingActionButton onclick={handleCreateTask} />
+  
+  <!-- Task Creation Modal -->
+  <TaskCreationModal />
+  
+  <!-- Task Edit Modal -->
+  <TaskEditModal />
 </div>

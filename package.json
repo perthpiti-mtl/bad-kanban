@@ -61,7 +61,8 @@
 	},
 	"dependencies": {
 		"@inlang/paraglide-js": "^2.0.0",
-		"daisyui": "^4.12.0"
+		"daisyui": "^4.12.0",
+		"zod": "^4.0.17"
 	},
 	"packageManager": "yarn@4.9.1+sha256.6ffc213b3ce0af5c92507977d9537ea3cc085caa52d1c3f08e94d613407fed19"
 }

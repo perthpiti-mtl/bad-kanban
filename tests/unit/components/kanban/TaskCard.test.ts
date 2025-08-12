@@ -136,6 +136,34 @@ describe('TaskCard', () => {
     expect(clickEvent.detail).toEqual({ task: mockTask })
   })
 
+  test('emits edit event with taskId when clicked', async () => {
+    let editEvent: CustomEvent | null = null
+    const { container } = render(TaskCard, { 
+      task: mockTask,
+      $$events: {
+        edit: (e: CustomEvent) => {
+          editEvent = e
+        }
+      }
+    })
+    
+    const card = container.querySelector('[role="button"]')
+    expect(card).toBeInTheDocument()
+    
+    await fireEvent.click(card!)
+    
+    expect(editEvent).toBeTruthy()
+    expect(editEvent.detail).toEqual({ taskId: mockTask.id })
+  })
+
+  test('has correct data-testid attributes', () => {
+    const { container } = render(TaskCard, { task: mockTask })
+    
+    const card = container.querySelector('[data-testid="task-card"]')
+    expect(card).toBeInTheDocument()
+    expect(card).toHaveAttribute('data-task-id', mockTask.id)
+  })
+
   test('handles keyboard navigation', async () => {
     const clickEvents: CustomEvent[] = []
     const { container } = render(TaskCard, { 

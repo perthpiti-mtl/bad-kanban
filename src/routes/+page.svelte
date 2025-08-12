@@ -1,10 +1,6 @@
 <script lang="ts">
-  import type { Task } from '$lib/types'
   import KanbanBoard from '$lib/components/kanban/KanbanBoard.svelte'
-  import { sampleTasks } from '$lib/data/sample-tasks'
-  
-  // Sample data for demonstration
-  let tasks: Task[] = sampleTasks
+  import { tasks } from '$lib/stores/tasks'
   
   // Page metadata for better SEO and accessibility
   const pageTitle = 'BMad Kanban Board'
@@ -26,13 +22,13 @@
       </div>
       <div class="flex-none">
         <span class="text-sm text-base-content/70">
-          {tasks.length} total tasks
+          {$tasks.length} total tasks
         </span>
       </div>
     </div>
   </header>
   
   <main class="flex-1 py-6">
-    <KanbanBoard {tasks} />
+    <KanbanBoard />
   </main>
 </div>

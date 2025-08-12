@@ -3,6 +3,7 @@
 ## Critical Fullstack Rules
 
 - **Type Sharing:** Always define types in `lib/types` and import from there
+- **Validation:** Use Zod schemas for all data validation - forms, API endpoints, and store actions
 - **API Calls:** Never make direct HTTP calls - use the service layer
 - **Environment Variables:** Access only through config objects, never process.env directly
 - **Error Handling:** All API routes must use the standard error handler
@@ -38,27 +39,52 @@
 
 ### Type Definitions
 - Always define explicit return types for functions
+- Use Zod schemas for runtime validation with automatic TypeScript type inference
 - Use `interface` for object shapes, `type` for unions/primitives
 - Prefer `unknown` over `any`
 - Use type assertions sparingly with proper type guards
+- Define validation schemas in `src/lib/types/schemas.ts` alongside type definitions
 
-### Example Type Structure
+### Example Type Structure with Zod
 ```typescript
-// src/lib/types/index.ts
-export interface Task {
-  id: string
-  title: string
-  status: TaskStatus
-  // ... other properties
-}
+// src/lib/types/schemas.ts
+import { z } from 'zod'
 
-export type TaskStatus = 'todo' | 'in-progress' | 'done'
+export const TaskStatusSchema = z.enum(['todo', 'in-progress', 'done'])
+export const PrioritySchema = z.enum(['high', 'medium', 'low'])
 
-export interface ApiResponse<T> {
-  data: T
-  success: boolean
-  timestamp: string
-}
+export const TaskSchema = z.object({
+  id: z.string().uuid(),
+  title: z.string().min(1, 'Title is required').max(100, 'Title too long'),
+  description: z.string().max(500, 'Description too long'),
+  status: TaskStatusSchema,
+  priority: PrioritySchema,
+  dueDate: z.date().nullable(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+  aiGenerated: z.boolean(),
+  originalPrompt: z.string().nullable()
+})
+
+export const CreateTaskSchema = TaskSchema.omit({ 
+  id: true, 
+  createdAt: true, 
+  updatedAt: true 
+})
+
+export const UpdateTaskSchema = TaskSchema.partial().required({ id: true })
+
+// Export inferred types
+export type Task = z.infer<typeof TaskSchema>
+export type TaskStatus = z.infer<typeof TaskStatusSchema>
+export type Priority = z.infer<typeof PrioritySchema>
+export type CreateTaskRequest = z.infer<typeof CreateTaskSchema>
+export type UpdateTaskRequest = z.infer<typeof UpdateTaskSchema>
+```
+
+```typescript
+// src/lib/types/index.ts - Re-export for convenience
+export * from './schemas'
 ```
 
 ## Svelte Component Standards
@@ -168,12 +194,23 @@ export const tasksByStatus = derived(tasks, ($tasks) => {
   }
 })
 
-// Actions
+// Actions with Zod validation
 export const taskActions = {
-  add: (task: Task) => tasks.update(prev => [...prev, task]),
+  add: (task: CreateTaskRequest) => {
+    const validated = CreateTaskSchema.parse(task)
+    const newTask = TaskSchema.parse({
+      ...validated,
+      id: crypto.randomUUID(),
+      createdAt: new Date(),
+      updatedAt: new Date()
+    })
+    tasks.update(prev => [...prev, newTask])
+  },
   remove: (id: string) => tasks.update(prev => prev.filter(t => t.id !== id)),
-  update: (id: string, updates: Partial<Task>) => 
-    tasks.update(prev => prev.map(t => t.id === id ? { ...t, ...updates } : t))
+  update: (id: string, updates: UpdateTaskRequest) => {
+    const validated = UpdateTaskSchema.parse({ ...updates, id })
+    tasks.update(prev => prev.map(t => t.id === id ? { ...t, ...validated, updatedAt: new Date() } : t))
+  }
 }
 ```
 
@@ -185,35 +222,85 @@ export const taskActions = {
 
 ## API & Service Standards
 
-### Service Layer Structure
+### Service Layer Structure with Zod Validation
 ```typescript
 // lib/services/task-service.ts
-import type { Task, CreateTaskRequest } from '$lib/types'
+import { TaskSchema, CreateTaskSchema, type Task, type CreateTaskRequest } from '$lib/types'
 import { apiClient } from './api-client'
+import { ZodError } from 'zod'
 
 export class TaskService {
   async getTasks(): Promise<Task[]> {
     try {
-      return await apiClient.get<Task[]>('/tasks')
+      const response = await apiClient.get<Task[]>('/tasks')
+      // Validate response data
+      return response.map(task => TaskSchema.parse(task))
     } catch (error) {
+      if (error instanceof ZodError) {
+        console.error('Invalid task data received:', error.errors)
+      }
       console.error('Failed to fetch tasks:', error)
       throw error
     }
   }
   
   async createTask(data: CreateTaskRequest): Promise<Task> {
-    // Implementation with proper error handling
+    try {
+      // Validate input data
+      const validatedData = CreateTaskSchema.parse(data)
+      const response = await apiClient.post<Task>('/tasks', validatedData)
+      // Validate response data
+      return TaskSchema.parse(response)
+    } catch (error) {
+      if (error instanceof ZodError) {
+        console.error('Validation failed:', error.errors)
+        throw new Error(`Invalid task data: ${error.errors.map(e => e.message).join(', ')}`)
+      }
+      console.error('Failed to create task:', error)
+      throw error
+    }
   }
 }
 
 export const taskService = new TaskService()
 ```
 
+### Zod Validation Standards
+
+**Schema Organization:**
+- Define all schemas in `src/lib/types/schemas.ts`
+- Use descriptive schema names ending with "Schema" (e.g., `TaskSchema`)
+- Export both schemas and inferred types from the same file
+- Group related schemas together
+
+**Validation Points:**
+- **Forms**: Validate user input before submission
+- **API Endpoints**: Validate request/response data
+- **Store Actions**: Validate data before state updates
+- **Service Layer**: Validate external API responses
+
+**Error Handling:**
+- Catch `ZodError` specifically and format user-friendly messages
+- Use Zod's built-in error formatting for form validation
+- Log detailed validation errors for debugging
+- Provide specific field-level error feedback in UI components
+
+**Schema Patterns:**
+```typescript
+// Base schema
+export const TaskSchema = z.object({...})
+
+// Derived schemas for different use cases
+export const CreateTaskSchema = TaskSchema.omit({ id: true, createdAt: true, updatedAt: true })
+export const UpdateTaskSchema = TaskSchema.partial().required({ id: true })
+export const TaskQuerySchema = z.object({ status: TaskStatusSchema.optional() })
+```
+
 ### Error Handling Patterns
 - Always handle errors at service boundaries
-- Use consistent error response format
-- Log errors with appropriate context
-- Provide user-friendly error messages
+- Use consistent error response format with Zod validation errors
+- Log errors with appropriate context including validation details
+- Provide user-friendly error messages from Zod error formatting
 
 ## Testing Standards
 
@@ -242,10 +329,51 @@ describe('TaskCard', () => {
 })
 ```
 
+### Zod Schema Testing
+```typescript
+// tests/unit/types/schemas.test.ts
+import { TaskSchema, CreateTaskSchema, UpdateTaskSchema } from '$lib/types/schemas'
+
+describe('TaskSchema', () => {
+  test('validates valid task data', () => {
+    const validTask = {
+      id: '123e4567-e89b-12d3-a456-426614174000',
+      title: 'Test Task',
+      description: 'Test Description',
+      status: 'todo',
+      priority: 'medium',
+      dueDate: null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      aiGenerated: false,
+      originalPrompt: null
+    }
+    
+    expect(() => TaskSchema.parse(validTask)).not.toThrow()
+  })
+  
+  test('rejects invalid task data', () => {
+    const invalidTask = { title: '', status: 'invalid' }
+    expect(() => TaskSchema.parse(invalidTask)).toThrow()
+  })
+  
+  test('provides meaningful error messages', () => {
+    try {
+      TaskSchema.parse({ title: '' })
+    } catch (error) {
+      expect(error.errors[0].message).toContain('Title is required')
+    }
+  })
+})
+```
+
 ### Testing Guidelines
 - Test behavior, not implementation details
 - Use meaningful test descriptions
 - Mock external dependencies
+- Test Zod schema validation with both valid and invalid data
+- Verify error messages are user-friendly
+- Test schema composition (omit, partial, etc.)
 - Maintain high test coverage for critical paths
 
 ## Performance Standards

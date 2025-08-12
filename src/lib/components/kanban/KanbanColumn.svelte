@@ -11,6 +11,7 @@
   // Event dispatcher for parent communication
   const dispatch = createEventDispatcher<{
     taskClick: { task: Task; column: string }
+    taskEdit: { taskId: string }
   }>()
   
   // Derived state for better performance
@@ -27,6 +28,11 @@
   function handleTaskClick(event: CustomEvent<{ task: Task }>) {
     const { task } = event.detail
     dispatch('taskClick', { task, column: title })
+  }
+
+  function handleTaskEdit(event: CustomEvent<{ taskId: string }>) {
+    const { taskId } = event.detail
+    dispatch('taskEdit', { taskId })
   }
 </script>
 
@@ -54,7 +60,7 @@
       
       {#each tasks as task (task.id)}
         <div role="listitem">
-          <TaskCard {task} on:click={handleTaskClick} />
+          <TaskCard {task} on:click={handleTaskClick} on:edit={handleTaskEdit} />
         </div>
       {/each}
     </div>
